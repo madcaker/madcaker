@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>Relative Timestamp Generator</title>
+  <!-- <link rel="shortcut icon" type="image/jpg" href="/timestamp-favicon.png"/> -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌏</text></svg>">
+
+  <meta name="description" content="Create timers for embedding into discord"/>
+  <link rel="stylesheet" href="timestamp.css">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Sen:wght@700&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+	<meta property="og:title" content="Relative timestamp generator" />
+	<meta property="og:type" content="Relative timestamp generator" />
+	<meta property="og:url" content="https://discordtimestampgenerator.netlify.app/" />
+	<meta property="og:image" content="https://discordtimestampgenerator.netlify.app/banner.png" />
+	<meta property="og:description" content="Generate timers for use in Discord!" />
+	<meta name="author" content="Dot32">
+	<meta name="twitter:card" content="summary_large_image">
+
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-XZX004NRR7"></script>
+	<script>
+	  window.dataLayer = window.dataLayer || [];
+	  function gtag(){dataLayer.push(arguments);}
+	  gtag('js', new Date());
+
+	  gtag('config', 'G-XZX004NRR7');
+	</script>
+
+</head>
+<body>
+	<main>
+		<div>
+			<!-- HTML starts here -->
+			<div id="copy-banner" class="copy-banner">Copied to clipboard</div>
+			<h1>Discord Relative Timestamp Generator</h1>
+
+			<p>Create a timestamp that automatically counts down the time.</p>
+			<img src="timestamp-example.png" height=81 alt="Your birthday is in [14 days]">
+			<p>Every day, hour, and minute, this little embed will count down for you! </p>
+			<p class="pc"> Right click to subtract time (-2 days will convert to "2 days ago", for example)</p>
+
+			<div class=highlighted>
+				<h2>Select the 
+					<select id="mode">
+						<option value="timeframe">timeframe</option>
+						<option value="date">date</option>
+					</select>
+			      	</h2>
+
+				<div oncontextmenu="return false;" class="relative" style="margin-bottom: 12px;"><!-- oncontextmenu="return false;" -->
+					<div class="button-container"><button class="minus minus-week">-</button><button id="weeks">0 weeks</button></button><button class="plus plus-week">+</button></div>
+					<div class="button-container"><button class="minus minus-day">-</button><button id="days">0 days</button></button><button class="plus plus-day">+</button></div>
+					<div class="button-container"><button class="minus minus-hour">-</button><button id="hours">0 hours</button></button><button class="plus plus-hour">+</button></div>
+					<div class="button-container"><button class="minus minus-minute">-</button><button id="minutes">0 minutes</button></button><button class="plus plus-minute">+</button></div>
+
+					<button class="reset" onmousedown="reset()"><i class="material-icons">cached</i></button>
+				</div>
+				<div oncontextmenu="return false;" class="nonrelative" hidden=true style="margin-bottom: 12px;"><!-- oncontextmenu="return false;" -->
+					<p style="margin:0px;">Date selection is done in UTC time. Your timezone is UTC<span id=timezone>+8</span>.</p>
+					<div class="look-at-these-guns">
+					<div class="name"><span>YEAR</span><textarea id="year" placeholder="Year..." rows=1 cols=7 onchange="timestampglobal()"></textarea></div>
+					<div class="name"><span>MONTH</span><textarea id="month" placeholder="Month..." rows=1 cols=7 onchange="timestampglobal()"></textarea></div>
+					<div class="name"><span>DAY</span><textarea id="day" placeholder="Day..." rows=1 cols=7 onchange="timestampglobal()"></textarea></div>
+					<div class="name"><span>HOUR</span><textarea id="hour" placeholder="Hour..." rows=1 cols=3 onchange="timestampglobal()"></textarea><p id=fake-hour></p></div>
+					<div class="name"><span>MINUTE</span><textarea id="minute" placeholder="Minute..." rows=1 cols=7 onchange="timestampglobal()"></textarea></div>
+					<button class="reset" onmousedown="reset()"><i class="material-icons">cached</i></button>
+					</div>
+				</div>
+
+				<h2>...and copy paste this into a Discord message!</h2>
+				<div>
+					<p id=special>Javscript failed to load<noscript>: please enable it to run this app</noscript></p>
+
+					<button id="copy" onclick="copy('special')"><i class="material-icons">content_copy</i></span></button>
+				</div>
+				<details>
+					<summary>Advanced options</summary>
+					<div>
+						<p>Select format:
+						<select id="type">
+							<option value="coutdown">Relative</option>
+							<option value="hour-short">Time</option>
+							<option value="hour-long">Long Time</option>
+							<option value="date-short">Date</option>
+							<option value="date-long">Long Date</option>
+							<option value="date-time">Date Time</option>
+							<option value="date-week">Date Weekday</option>
+						</select> </p>
+					</div>
+					<!-- <div>
+						<p>Wrap time:</p>
+					</div> -->
+				</details>
+			</div>
+			<br/>
+			<!-- <div class=highlighted>
+				<h2>Want the 2023 New Years Countdown?</h2>
+				<p>Note it is adjusted for your timezone (UTC<span id="timezone">+8h</span>), and may not be accurate to others.</p>
+				<div>
+					<p id=special-new-years>&lt;t:1672531200:R&gt;</p>
+
+					<button id="copy" onclick="copy('special-new-years')"><i class="material-icons">content_copy</i></span></button>
+				</div>
+			</div> -->
+
+			<!-- <p>Curious how this works? <a href="https://github.com/Dot32IsCool/discord-timestamp-generator">View the source code</a> (and possibly leave a star) <br> Generator created by <a href="https://github.com/Dot32IsCool">Dot32</a>.</p> -->
+			<p>Generator created by <span>Dot32#1186</span>, and is open source on Github under the MIT licence</p>
+			<a href="https://github.com/Dot32IsCool/discord-timestamp-generator"><p>Star this project</p><p class="data stars">Loading</p></a>
+			<!-- <br> -->
+			<a href="https://discord.com/api/oauth2/authorize?client_id=1040831863381557321&permissions=277025392640&scope=bot%20applications.commands"><p>Get the Discord bot!</p><p class="data server-count">50+ Servers</p></a>
+			
+			<script type="text/javascript" src="timestamp.js"></script>
+		</div>
+	</main>
+</body>
+</html>
